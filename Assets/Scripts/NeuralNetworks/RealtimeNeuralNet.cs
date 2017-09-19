@@ -60,6 +60,9 @@ namespace NeuralNetworks {
         private void Awake() {
             net = new FullyConnectedNN(NeuronsPerLayer, AF);
             inputs = new float[Inputs.Length];
+        }
+
+        private void Start() {
             ValidateWeights();
         }
 

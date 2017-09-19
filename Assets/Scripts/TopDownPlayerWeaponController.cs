@@ -40,7 +40,9 @@ public class TopDownPlayerWeaponController : MonoBehaviour {
 
         RaycastHit hit;
         if (Ground.Raycast(ray, out hit, 1000)) {
-            transform.LookAt(hit.point);
+            Vector3 lookat = hit.point;
+            lookat.y = transform.position.y;
+            transform.LookAt(lookat);
         }
     }
 }
