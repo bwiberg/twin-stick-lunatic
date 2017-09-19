@@ -24,14 +24,12 @@ public class StupidEnemyController : EnemyController {
     }
 
     private void Turn(Vector3 playerDir, float angleDegrees) {
-        float angleIncrement = 0.0f;
         if (Mathf.Abs(angleDegrees) < FieldOfViewDegrees) {
             transform.forward = Vector3.RotateTowards(transform.forward, playerDir,
                 Mathf.Deg2Rad * TurnSpeed * Time.fixedDeltaTime, 1.0f);
         }
         else {
-            angleIncrement = turnAngularSpeed * Time.fixedDeltaTime;
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, angleIncrement, 0));
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, turnAngularSpeed * Time.fixedDeltaTime, 0));
         }
     }
 

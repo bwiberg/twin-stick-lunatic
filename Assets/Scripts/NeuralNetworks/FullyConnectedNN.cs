@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 
 namespace NeuralNetworks {
-    public delegate float ActivationFunction(float value);
-
     public class FullyConnectedNN {
         public int[] NeuronsPerLayer;
         public ActivationFunction ActivationFunction;
@@ -27,12 +25,16 @@ namespace NeuralNetworks {
             }
         }
 
+        public int NumWeights {
+            get { return RequiredWeights(NeuronsPerLayer); }
+        }
+
         public FullyConnectedNN(int[] neuronsPerLayer, ActivationFunction activationFunction = null) {
             if (neuronsPerLayer.Length < 2) {
                 throw new Exception("neuronsPerLayer.Length must be at least two (input- and output layers).");
             }
             NeuronsPerLayer = neuronsPerLayer;
-            ActivationFunction = activationFunction ?? AF.Default;
+            ActivationFunction = activationFunction ?? AF.BinaryMinusOneOrOne;
         }
 
         public float[] Evaluate(float[] inputs, float[] weights) {
@@ -41,7 +43,7 @@ namespace NeuralNetworks {
             float[] outputs = null;
             while (layer < LayerCount) {
                 outputs = EvaluateLayer(inputs, layer, weights, ref weightOffset);
-                
+
                 layer++;
                 inputs = outputs;
             }
@@ -71,18 +73,12 @@ namespace NeuralNetworks {
             return ActivationFunction(weightedInputSum);
         }
 
-        public static class AF {
-            public static float Default(float input) {
-                return input >= 0.0f ? 1.0f : -1.0f;
+        public static int RequiredWeights(int[] NeuronsPerLayer) {
+            int sum = 0;
+            for (int i = 1; i < NeuronsPerLayer.Length; ++i) {
+                sum += NeuronsPerLayer[i] * NeuronsPerLayer[i - 1];
             }
-    
-            public static float Smooth(float input) {
-                return (float) Math.Tanh(input);
-            }
-    
-            public static float Passthrough(float input) {
-                return input;
-            }
+            return sum;
         }
     }
 }

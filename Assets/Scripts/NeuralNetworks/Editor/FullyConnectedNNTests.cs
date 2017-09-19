@@ -50,19 +50,19 @@ public class FullyConnectedNNTests {
     [Test]
     public void ActivationFunction_IsDefaultFunction_IfNoneProvidedToConstructor() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 4, 1337});
-        Assert.True(nn.ActivationFunction == FullyConnectedNN.AF.Default);
+        Assert.True(nn.ActivationFunction == AF.BinaryMinusOneOrOne);
     }
 
     [Test]
     public void ActivationFunction_IsFunction_IfFunctionProvidedToConstructor() {
-        FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 4, 1337}, FullyConnectedNN.AF.Smooth);
-        Assert.True(nn.ActivationFunction == FullyConnectedNN.AF.Smooth);
+        FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 4, 1337}, AF.SmoothTanh);
+        Assert.True(nn.ActivationFunction == AF.SmoothTanh);
     }
 
     [Test]
     public void EvaluateNeuron_WithPassthroughAF_WithSingleInput_ReturnsInputValueTimesWeight() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 1},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         AssertFloat.AreAlmostEqual(-1.0f, nn.EvaluateNeuron(new[] {-1.0f}, 1, new[] {1.0f}, 0));
         AssertFloat.AreAlmostEqual(0.35f, nn.EvaluateNeuron(new[] {0.35f}, 1, new[] {1.0f}, 0));
@@ -72,7 +72,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void EvaluateNeuron_WithPassthroughAF_WithMultipleInputs_ReturnsCorrectValue() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {2, 1},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         AssertFloat.AreAlmostEqual(0.0f, nn.EvaluateNeuron(new[] {0.0f, 0.0f}, 1, new[] {1.0f, 1.0f}, 0));
         AssertFloat.AreAlmostEqual(0.8f, nn.EvaluateNeuron(new[] {0.3f, 0.5f}, 1, new[] {1.0f, 1.0f}, 0));
@@ -82,7 +82,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void EvaluateLayer_WithPassthroughAF_WithSingleInput_ReturnsInputValueTimesWeights() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 2},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         int offsetWeight = 0;
         float[] output = nn.EvaluateLayer(new[] {1.0f}, 1, new[] {0.3f, -1.0f}, ref offsetWeight);
@@ -100,7 +100,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void EvaluateLayer_WithPassthroughAF_WithMultipleInputs_ReturnsCorrectValues() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {2, 2},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         int offsetWeight = 0;
         float[] output = nn.EvaluateLayer(new[] {1.0f, -1.0f}, 1, new[] {0.9f, 1.0f, 1.0f, 0.5f}, ref offsetWeight);
@@ -112,7 +112,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void Evaluate_WithPassthroughAF_WithSingleInputAndOutput_ReturnsInputTimesWeight() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 1},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         float[] output = nn.Evaluate(new[] {1.0f}, new[] {1.0f});
         AssertFloat.AreAlmostEqual(1.0f, output[0]);
@@ -124,7 +124,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void Evaluate_WithPassthroughAF_WithSingleHiddenLayer_WithSingleInputAndOutput_ReturnsInputTimesWeight() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {1, 1, 1},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         float[] output = nn.Evaluate(new[] {0.8f}, new[] {0.8f, 0.8f});
         AssertFloat.AreAlmostEqual(0.512f, output[0]);
@@ -133,7 +133,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void Evaluate_WithPassthroughAF_WithSingleHiddenLayer_WithMultipleInputAndOutput_ReturnsCorrect() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {2, 1, 2},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         float[] output = nn.Evaluate(new[] {1.0f, -1.0f}, new[] {0.2f, 0.4f, 0.2f, 0.4f});
         AssertFloat.AreAlmostEqual(-0.04f, output[0]);
@@ -143,7 +143,7 @@ public class FullyConnectedNNTests {
     [Test]
     public void Evaluate_WithPassthroughAF_WithMultipleHiddenLayers_WithMultipleInputAndOutput_ReturnsCorrect() {
         FullyConnectedNN nn = new FullyConnectedNN(new[] {2, 2, 2},
-            FullyConnectedNN.AF.Passthrough);
+            AF.Passthrough);
 
         float[] output = nn.Evaluate(new[] {1.0f, -1.0f}, new[] {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f});
         AssertFloat.AreAlmostEqual(-0.11f, output[0]);
