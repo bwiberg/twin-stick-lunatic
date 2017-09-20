@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class RealtimeNeuralNetInput : CustomBehaviour {
-    public abstract float GetInput();
+namespace NeuralNetworks {
+    public abstract class RealtimeNeuralNetInput : CustomBehaviour {
+        public abstract int InputCount { get; }
+
+        public abstract float[] GetInput();
+    }
 }

@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class RealtimeNeuralNetOutput : CustomBehaviour {
-    public abstract void HandleOutput(float value);
+namespace NeuralNetworks {
+    public abstract class RealtimeNeuralNetOutput : CustomBehaviour {
+        public abstract int OutputCount { get; }
+
+        public abstract void HandleOutput(float[] values, int offset);
+    }
 }

@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NeuralNetworks;
+using OSCsharp.Utils;
 using UnityEngine.Assertions;
 
 namespace NeuralNetworks {
@@ -34,11 +37,13 @@ namespace NeuralNetworks {
         private int[] NeuronsPerLayer {
             get {
                 int[] neuronsPerLayer = new int[2 + HiddenLayers.Length];
-                neuronsPerLayer[0] = Inputs.Length;
+                neuronsPerLayer[0] = Inputs.Select(input => input.InputCount).Sum();
+
                 for (int i = 1; i <= HiddenLayers.Length; ++i) {
                     neuronsPerLayer[i] = HiddenLayers[i - 1];
                 }
-                neuronsPerLayer[neuronsPerLayer.Length - 1] = Outputs.Length;
+                
+                neuronsPerLayer[neuronsPerLayer.Length - 1] = Outputs.Select(input => input.OutputCount).Sum();
                 return neuronsPerLayer;
             }
         }
@@ -58,8 +63,10 @@ namespace NeuralNetworks {
         }
 
         private void Awake() {
+            if (!isActiveAndEnabled) return;
+            
             net = new FullyConnectedNN(NeuronsPerLayer, AF);
-            inputs = new float[Inputs.Length];
+            inputs = new float[NeuronsPerLayer[0]];
         }
 
         private void Start() {
@@ -79,12 +86,23 @@ namespace NeuralNetworks {
         }
 
         private void Process() {
-            for (int i = 0; i < Inputs.Length; ++i) {
-                inputs[i] = Inputs[i].GetInput();
+            // build up input array from input nodes
+            int index = 0;
+            foreach (RealtimeNeuralNetInput inputNode in Inputs) {
+                float[] input = inputNode.GetInput();
+                Assert.AreEqual(inputNode.InputCount, input.Length);
+                foreach (float t in input) {
+                    inputs[index++] = t;
+                }
             }
+            
             float[] outputs = net.Evaluate(inputs, Weights);
-            for (int i = 0; i < Outputs.Length; ++i) {
-                Outputs[i].HandleOutput(outputs[i]);
+            
+            // send output to all output nodes
+            index = 0;
+            foreach (RealtimeNeuralNetOutput outputNode in Outputs) {
+                outputNode.HandleOutput(outputs, index);
+                index += outputNode.OutputCount;
             }
         }
 
