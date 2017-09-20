@@ -6,6 +6,7 @@ using System.Linq;
 using NeuralNetworks;
 using OSCsharp.Utils;
 using UnityEngine.Assertions;
+using Utility;
 
 namespace NeuralNetworks {
     public enum ActivationFunc {
@@ -23,6 +24,7 @@ namespace NeuralNetworks {
         [SerializeField] private RealtimeNeuralNetInput[] Inputs;
         [SerializeField] private RealtimeNeuralNetOutput[] Outputs;
         [SerializeField] private int[] HiddenLayers;
+        [SerializeField] private bool Recurrent;
         [SerializeField] private ActivationFunc ActivationFunc;
         [SerializeField] private UpdateFrequency UpdateFrequency;
         [SerializeField] public float[] Weights;
@@ -33,19 +35,35 @@ namespace NeuralNetworks {
 
         private FullyConnectedNN net;
         private float[] inputs;
+        private float[] outputs;
+
+        private int[] _NeuronsPerLayer;
 
         private int[] NeuronsPerLayer {
             get {
-                int[] neuronsPerLayer = new int[2 + HiddenLayers.Length];
-                neuronsPerLayer[0] = Inputs.Select(input => input.InputCount).Sum();
+                _NeuronsPerLayer = new int[2 + HiddenLayers.Length];
+
+                // number of outputs
+                _NeuronsPerLayer[_NeuronsPerLayer.Length - 1] = Outputs.Select(input => input.OutputCount).Sum();
+
+                // number of inputs
+                _NeuronsPerLayer[0] = Inputs.Select(input => input.InputCount).Sum() +
+                                      (Recurrent ? _NeuronsPerLayer[_NeuronsPerLayer.Length - 1] : 0);
 
                 for (int i = 1; i <= HiddenLayers.Length; ++i) {
-                    neuronsPerLayer[i] = HiddenLayers[i - 1];
+                    _NeuronsPerLayer[i] = HiddenLayers[i - 1];
                 }
                 
-                neuronsPerLayer[neuronsPerLayer.Length - 1] = Outputs.Select(input => input.OutputCount).Sum();
-                return neuronsPerLayer;
+                return _NeuronsPerLayer;
             }
+        }
+
+        private int NumInputs {
+            get { return NeuronsPerLayer[0]; }
+        }
+
+        private int NumOutputs {
+            get { return NeuronsPerLayer[NeuronsPerLayer.Length - 1]; }
         }
 
         private ActivationFunction AF {
@@ -64,9 +82,10 @@ namespace NeuralNetworks {
 
         private void Awake() {
             if (!isActiveAndEnabled) return;
-            
+
             net = new FullyConnectedNN(NeuronsPerLayer, AF);
-            inputs = new float[NeuronsPerLayer[0]];
+            inputs = new float[NumInputs];
+            outputs = new float[NumOutputs].Fill(0.0f);
         }
 
         private void Start() {
@@ -88,19 +107,25 @@ namespace NeuralNetworks {
         private void Process() {
             // build up input array from input nodes
             int index = 0;
-            foreach (RealtimeNeuralNetInput inputNode in Inputs) {
+            foreach (var inputNode in Inputs) {
                 float[] input = inputNode.GetInput();
                 Assert.AreEqual(inputNode.InputCount, input.Length);
                 foreach (float t in input) {
                     inputs[index++] = t;
                 }
             }
-            
-            float[] outputs = net.Evaluate(inputs, Weights);
-            
+
+            if (Recurrent) {
+                foreach (float recurrentInput in outputs) {
+                    inputs[index++] = recurrentInput;
+                }
+            }
+
+            outputs = net.Evaluate(inputs, Weights);
+
             // send output to all output nodes
             index = 0;
-            foreach (RealtimeNeuralNetOutput outputNode in Outputs) {
+            foreach (var outputNode in Outputs) {
                 outputNode.HandleOutput(outputs, index);
                 index += outputNode.OutputCount;
             }
