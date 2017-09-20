@@ -21,6 +21,10 @@ GameObject:
   - component: {fileID: 4808137547859312}
   - component: {fileID: 114289114280697842}
   - component: {fileID: 54137063924170312}
+  - component: {fileID: 114421116656491112}
+  - component: {fileID: 114883778282955030}
+  - component: {fileID: 114327189798198534}
+  - component: {fileID: 114833448797154208}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -236,3 +240,63 @@ MonoBehaviour:
   TurnSpeed: 30
   MovementSpeed: 5
   FieldOfViewDegrees: 25
+--- !u!114 &114327189798198534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4eca25f2ef4a369be9ff63d82fddfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NormalizationAngleDegrees: 45
+--- !u!114 &114421116656491112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3b4444d750464d93f214c124d6ea23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Inputs:
+  - {fileID: 114883778282955030}
+  - {fileID: 114327189798198534}
+  Outputs:
+  - {fileID: 114833448797154208}
+  HiddenLayers: 
+  ActivationFunc: 0
+  UpdateFrequency: 0
+  Weights:
+  - 1
+  - 0
+  - 0
+  - 1
+--- !u!114 &114833448797154208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c92162b409e74f3b86559465041ff74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NumberOfOutputs: 2
+--- !u!114 &114883778282955030
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbcc342032844a08eac489a685c7b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NormalizationDistance: 50
