@@ -28,7 +28,7 @@ namespace NeuralNetworks {
         [SerializeField] private ActivationFunc ActivationFunc;
         [SerializeField] private UpdateFrequency UpdateFrequency;
         [SerializeField] public float[] Weights;
-
+        
         public int RequiredWeights {
             get { return FullyConnectedNN.RequiredWeights(NeuronsPerLayer); }
         }
@@ -53,7 +53,7 @@ namespace NeuralNetworks {
                 for (int i = 1; i <= HiddenLayers.Length; ++i) {
                     _NeuronsPerLayer[i] = HiddenLayers[i - 1];
                 }
-                
+
                 return _NeuronsPerLayer;
             }
         }
@@ -80,9 +80,8 @@ namespace NeuralNetworks {
             }
         }
 
-        private void Awake() {
-            if (!isActiveAndEnabled) return;
-
+        private void OnEnable() {
+            Debug.Log("RealtimeNeuralNet enabled.");
             net = new FullyConnectedNN(NeuronsPerLayer, AF);
             inputs = new float[NumInputs];
             outputs = new float[NumOutputs].Fill(0.0f);
