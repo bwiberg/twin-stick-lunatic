@@ -5,7 +5,7 @@ using UnityEngine;
 using Utility;
 
 namespace NeuralNetworks.Inputs {
-    public class NNInputAngleToPlayer : RealtimeNeuralNetInput {
+    public class NNInputLookAtPlayer : RealtimeNeuralNetInput {
         [SerializeField] private float NormalizationAngleDegrees = 45.0f;
         private readonly float[] values = new float[1];
 
@@ -14,10 +14,11 @@ namespace NeuralNetworks.Inputs {
         }
 
         public override float[] GetInput() {
-            float signedAngle = Vector2.SignedAngle(transform.forward.xz(),
+            float angle = Vector2.Angle(transform.forward.xz(),
                 player.transform.position.xz() - transform.position.xz());
 
-            values[0] = Mathf.Clamp(signedAngle / NormalizationAngleDegrees, -1.0f, 1.0f);
+            values[0] = 1 - Mathf.Exp(- angle / NormalizationAngleDegrees);
+            Debug.LogFormat("NNInputLookAtPlayer [value={0}]", values[0]);
             return values;
         }
     }
