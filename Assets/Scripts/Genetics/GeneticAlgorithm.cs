@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using KdTree;
+using UnityEngine;
 
 namespace Genetics {
-    public class Generik<T> {
-        public T[] value;
-    }
-    
-    
-
-    public class Individual {
-        public DNA dna;
-        private Generik<float> k;
+    public class GeneticAlgorithm : CustomSingletonBehaviour<GeneticAlgorithm> {
+        public static int HallOfFameCount = 100;
         
+        [SerializeField] private FitnessEvaluator FitnessEvaluator;
+        [SerializeField, Range(1, 100)] private int GeneCount = 10;
+        
+        private readonly SortedList<DNA, float> HallOfFame = new SortedList<DNA, float>(HallOfFameCount);
 
-        public float EvaluateFitness() {
-            return 0.0f;
+        public IEnumerator RunSingleGeneration(int populationSize) {
+            
         }
-    }
-
-    public class GeneticAlgorithm {
-        public GeneticAlgorithm() {
+        
+        public void SaveResults() {
+            Debug.Log("Saving results...");
         }
     }
 }

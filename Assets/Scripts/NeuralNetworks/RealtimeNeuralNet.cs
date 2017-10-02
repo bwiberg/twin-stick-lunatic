@@ -176,8 +176,15 @@ namespace NeuralNetworks {
             }
             
             Rect rect = new Rect(DebugRect);
+            GUI.Label(rect, "Weights: ");
+            rect.y += DebugRowHeight;
+            
+            GUI.Label(rect, string.Join(", ", Weights.Select(w => w.ToString()).ToArray()));
+            rect.y += DebugRowHeight;
+            
             GUI.Label(rect, "Inputs:");
             rect.y += DebugRowHeight - 10;
+            
             foreach (var row in debugInputRows) {
                 GUI.Label(rect, row);
                 rect.y += DebugRowHeight;
@@ -185,6 +192,7 @@ namespace NeuralNetworks {
             
             GUI.Label(rect, "Outputs:");
             rect.y += DebugRowHeight - 10;
+            
             foreach (var row in debugOutputRows) {
                 GUI.Label(rect, row);
                 rect.y += DebugRowHeight;

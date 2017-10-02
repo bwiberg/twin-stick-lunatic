@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NeuralNetworks.Inputs {
     public class NNInputViewFrustumProximity : RealtimeNeuralNetInput {
-        private readonly float[] values = new float[3];
+        private readonly float[] values = new float[1];
 
         private bool playerIsWithinFrustum;
 
@@ -26,7 +26,7 @@ namespace NeuralNetworks.Inputs {
             }
         }
 
-        private void OnTriggerLeave(Collider other) {
+        private void OnTriggerExit(Collider other) {
             Debug.LogFormat("OnTriggerLeave, name={0}", other.name);
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {

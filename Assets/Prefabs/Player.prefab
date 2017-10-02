@@ -23,7 +23,8 @@ GameObject:
   - component: {fileID: 136433601267942984}
   - component: {fileID: 114986498986554578}
   - component: {fileID: 114244269649123544}
-  m_Layer: 0
+  - component: {fileID: 114840666767963016}
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -42,7 +43,7 @@ GameObject:
   - component: {fileID: 23787556139773794}
   - component: {fileID: 33948022966471972}
   - component: {fileID: 114083675274855548}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +62,7 @@ GameObject:
   - component: {fileID: 23751633405878552}
   - component: {fileID: 33613625756152718}
   - component: {fileID: 114811617151642566}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +77,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4985013868583250}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +119,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1507079626188782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.42, z: 0}
+  m_LocalPosition: {x: 0.61, y: 9.1, z: 20.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4800716010451910}
@@ -831,6 +832,27 @@ MonoBehaviour:
   m_selectedFaces: 
   m_SelectedEdges: []
   m_selectedTriangles: 
+--- !u!114 &114840666767963016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507079626188782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea457eca7504abd9d20af565ae5bdb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Integers:
+  - Key: 
+    Value: 1
+  Floats:
+  - Key: Swag
+    Value: 0
+  Bools: []
+  Strings:
+  - Key: 
+    Value: 
 --- !u!114 &114986498986554578
 MonoBehaviour:
   m_ObjectHideFlags: 1
