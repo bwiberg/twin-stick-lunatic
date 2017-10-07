@@ -10,8 +10,11 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
 
     private string speciesName;
     private float intelligence;
+    private int populationSize;
 
-    private GeneticAlgorithm geneticAlgorithm;
+    private GeneticAlgorithm ga {
+        get { return GeneticAlgorithm.Instance; }
+    }
 
     // Add menu item named "My Window" to the Window menu
     [MenuItem("Window/Genetic Algorithm")]
@@ -19,7 +22,7 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
         //Show existing window instance. If one doesn't exist, make one.
         GetWindow(typeof(GeneticAlgorithmWindow));
     }
-    
+
     private void OnGUI() {
         EditorGUI.BeginDisabledGroup(playmode == Playmode.IsPlaying);
 
@@ -28,13 +31,13 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
             StartPlaymode();
         }
         else if (playmode == Playmode.IsPlaying && wantsToSimulate && GUILayout.Button("End evolution")) {
-            geneticAlgorithm.SaveResults();
             StopPlaymode();
         }
 
         GUILayout.Label("Species", EditorStyles.boldLabel);
         speciesName = EditorGUILayout.DelayedTextField("Name");
         intelligence = EditorGUILayout.Slider("Intelligence", intelligence, 0.0f, 1.0f);
+        populationSize = EditorGUILayout.IntSlider("Population size", populationSize, 1, 100);
         EditorGUI.EndDisabledGroup();
     }
 
@@ -42,18 +45,21 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
         Debug.LogFormat("OnPlaymodeStarted({0}) from GeneticAlgorithmWindow",
             fromEditorPlayButton ? "EDITOR" : "CUSTOM");
 
-        var gameObject = new GameObject("Genetic Algorithm (Singleton)");
-        geneticAlgorithm = gameObject.AddComponent<GeneticAlgorithm>();
+        if (fromEditorPlayButton) {
+            return;
+        }
 
-        Debug.LogFormat("Number of CustomBehaviours: {0}", FindObjectsOfType<CustomBehaviour>().Length);
-        
+        ga.RunSingleGeneration(populationSize, () => {
+            Debug.Log("Generation complete");
+            StopPlaymode();
+        });
         Repaint();
     }
 
     protected override void OnPlaymodeEnded(bool fromEditorPlayButton) {
         Debug.LogFormat("OnPlaymodeEnded({0}) from GeneticAlgorithmWindow", fromEditorPlayButton ? "EDITOR" : "CUSTOM");
         wantsToSimulate = false;
-        
+
         Repaint();
     }
 }

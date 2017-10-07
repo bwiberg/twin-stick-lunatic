@@ -1,13 +1,17 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 namespace Genetics {
-    public abstract class Creature : CustomBehaviour {
-        protected GeneticAlgorithm ga {
-            get { return GeneticAlgorithm.Instance; }
-        }
+    public class Creature : CustomBehaviour {
+        [SerializeField] private UpdateMethod UpdateMethod;
         
-        public abstract void InitFromDNA(DNA dna);
+        public enum State {
+            NotBorn,
+            Alive,
+            Dead
+        }
 
-        public abstract IEnumerator Live();
+        public State state { get; private set; }
+        public DNA DNA { get; set; }
     }
 }
