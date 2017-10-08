@@ -10,21 +10,50 @@ namespace Genetics {
     public class GeneticAlgorithm : CustomSingletonBehaviour<GeneticAlgorithm> {
         public delegate void GenerationComplete();
 
-        public static int HallOfFameCount = 100;
+        #region STATIC_FIELDS
+
         private static readonly DuplicateKeyComparer<float> Comparer = new DuplicateKeyComparer<float>();
+        public static int HallOfFameCount = 100;
+
+        #endregion
+
+
+        #region SERIALIZABLE_FIELDS
 
         [SerializeField] private UpdateMethod UpdateMethod;
-
         [SerializeField, Range(1.0f, 120.0f)] private float TerminationTime = 10.0f;
         [SerializeField] private FitnessEvaluator FitnessEvaluator;
         [SerializeField, Range(1, 100)] private int GeneCount = 10;
 
+        #endregion
+
+
+        #region PRIVATE_VARIABLES
+
+        private CreatureCreator creatureCreator;
         private readonly SortedList<float, DNA> HallOfFame = new SortedList<float, DNA>(
             Mathf.RoundToInt(1.3f * HallOfFameCount), Comparer);
 
         private SortedList<float, DNA> PreviousGenerationDnasByFitness;
 
+        #endregion
+
+
+        #region PUBLIC_PROPERTIES
+
         public int Generation { get; private set; }
+
+        #endregion
+        
+        
+        #region UNITY_EVENT_METHODS
+
+        private void Start() {
+            creatureCreator = CreatureCreator.Instance;
+        }
+
+        #endregion
+
 
         public IEnumerator RunSingleGeneration(int populationSize,
             GenerationComplete callback) {
@@ -45,9 +74,9 @@ namespace Genetics {
                 .ToArray();
 
             // keep generation
-            PreviousGeneration = new SortedList<float, DNA>(populationSize, Comparer);
+            PreviousGenerationDnasByFitness = new SortedList<float, DNA>(populationSize, Comparer);
             for (int i = 0; i < populationSize; i++) {
-                PreviousGeneration.Add(fitnesses[i], population[i].DNA);
+                PreviousGenerationDnasByFitness.Add(fitnesses[i], population[i].DNA);
 
                 // also add to Hall of Fame
                 HallOfFame.Add(fitnesses[i], population[i].DNA);
@@ -60,7 +89,12 @@ namespace Genetics {
         }
 
         private Creature[] CreateGeneration(int populationSize) {
+            var dnas = new DNA[populationSize];
             
+            var population = new Creature[populationSize];
+            for (int i = 0; i < populationSize; i++) {
+                population[i] = creatureCreator.Create();
+            }
         }
 
         private YieldInstruction WaitForNextUpdate() {

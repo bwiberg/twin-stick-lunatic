@@ -3,7 +3,7 @@ using UnityEngine.Assertions;
 
 namespace Genetics {
     public class DNA {
-        public static int Count { get; private set; };
+        public static int Count { get; private set; }
 
         public readonly float[] Genes;
 
