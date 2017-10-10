@@ -18,7 +18,6 @@ namespace NeuralNetworks.Inputs {
                 player.transform.position.xz() - transform.position.xz());
 
             values[0] = 1 - Mathf.Exp(- angle / NormalizationAngleDegrees);
-            Debug.LogFormat("NNInputLookAtPlayer [value={0}]", values[0]);
             return values;
         }
     }

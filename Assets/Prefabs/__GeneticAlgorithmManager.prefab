@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1559434783243118}
+  m_IsPrefabParent: 1
+--- !u!1 &1559434783243118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4554408206077570}
+  - component: {fileID: 114072190181798312}
+  - component: {fileID: 114946382917711120}
+  - component: {fileID: 114905763142490152}
+  - component: {fileID: 114172664494710914}
+  m_Layer: 0
+  m_Name: __GeneticAlgorithmManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4554408206077570
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1559434783243118}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114072190181798312
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1559434783243118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5929cb68dc145ae937c9c6ce9a56445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FitnessEvaluator: {fileID: 114946382917711120}
+  FractionFromHallOfFame: 0.2
+  UpdateMethod: 0
+  TerminationTime: 30
+  CreatureCreator: {fileID: 114905763142490152}
+--- !u!114 &114172664494710914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1559434783243118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3c51a36bde4c48a655b74f21eadb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Box:
+    m_Center: {x: 0, y: 1, z: 0}
+    m_Extent: {x: 40, y: 1, z: 40}
+  LookAtPlayer: 1
+--- !u!114 &114905763142490152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1559434783243118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2491ac1c0f24f1eb17533f85ba9ed2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CreaturePrefab: {fileID: 114627393783257742, guid: 381dcbd06f9e84736b66592208ff9c92,
+    type: 2}
+  SpawnStateCreator: {fileID: 114172664494710914}
+--- !u!114 &114946382917711120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1559434783243118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79c8219c71ad4a1babeea1a87eed8116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

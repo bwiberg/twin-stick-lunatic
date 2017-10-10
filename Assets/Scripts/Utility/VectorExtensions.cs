@@ -99,5 +99,21 @@ namespace Utility {
         public static Vector3 CopySetYZ(this Vector3 v, Vector2 yz) {
             return v.CopySetYZ(yz[0], yz[1]);
         }
+
+        ////////////////////
+        // RANDOM METHODS //
+        ////////////////////
+
+        public static Vector3 RandomZeroToOne() {
+            return new Vector3(Random.value,
+                Random.value,
+                Random.value);
+        }
+
+        public static Vector3 RandomMinusOneToOne() {
+            return new Vector3(Random.value * 2 - 1,
+                Random.value * 2 - 1,
+                Random.value * 2 - 1);
+        }
     }
 }

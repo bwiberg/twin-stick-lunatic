@@ -14,7 +14,7 @@ namespace NeuralNetworks.Outputs {
         public override void HandleOutput(float[] values, int offset) {
             float value = values[offset];
             if (Mathf.Abs(value) < ValueThreshold) {
-                value = 0.0f;
+                value = 1.0f;
             }
             rb.angularVelocity = rb.angularVelocity.CopySetY(value * MaxAngularVelocity);
         }

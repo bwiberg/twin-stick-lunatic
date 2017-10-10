@@ -19,16 +19,12 @@ namespace NeuralNetworks.Inputs {
         }
 
         private void OnTriggerEnter(Collider other) {
-            Debug.LogFormat("OnTriggerEnter, name={0}", other.name);
-
             if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
                 playerIsWithinFrustum = true;
             }
         }
 
         private void OnTriggerExit(Collider other) {
-            Debug.LogFormat("OnTriggerLeave, name={0}", other.name);
-
             if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
                 playerIsWithinFrustum = false;
             }

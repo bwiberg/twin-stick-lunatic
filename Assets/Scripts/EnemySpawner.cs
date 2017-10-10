@@ -35,8 +35,8 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	private void SpawnEnemy() {
-		Vector3 position = new Vector3(Random.Range(X0, X1), SpawnY, Random.Range(Z0, Z1));
-		Quaternion rotation = Quaternion.Euler(0, Random.Range(0.0f, 2 * Mathf.PI), 0);
-		GameObject enemy = Instantiate(EnemyPrefabs.GetRandom(), position, rotation, transform);
+		var position = new Vector3(Random.Range(X0, X1), SpawnY, Random.Range(Z0, Z1));
+		var rotation = Quaternion.Euler(0, Random.Range(0.0f, 2 * Mathf.PI), 0);
+		Instantiate(EnemyPrefabs.GetRandom(), position, rotation, transform);
 	}
 }

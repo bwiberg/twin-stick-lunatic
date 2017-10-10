@@ -19,8 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4808137547859312}
-  - component: {fileID: 114289114280697842}
   - component: {fileID: 54137063924170312}
+  - component: {fileID: 114627393783257742}
+  - component: {fileID: 114893175326576912}
   - component: {fileID: 114421116656491112}
   - component: {fileID: 114369218110107294}
   - component: {fileID: 114076064219095642}
@@ -855,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71fca6d982a84080a4a4da72254dcfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxAngularVelocity: 1
+  MaxAngularVelocity: 3
   ValueThreshold: 0.0025
 --- !u!114 &114199886684538980
 MonoBehaviour:
@@ -881,20 +882,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityType: 2
---- !u!114 &114289114280697842
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1386910090302376}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a97383f81266546e1884b0b7267aeed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TurnSpeed: 30
-  MovementSpeed: 5
-  FieldOfViewDegrees: 25
 --- !u!114 &114369218110107294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -906,7 +893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08eabd505cd642b7beb928770e9e16e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSpeed: 1
+  MaxSpeed: 4
 --- !u!114 &114421116656491112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -925,9 +912,9 @@ MonoBehaviour:
   Outputs:
   - {fileID: 114369218110107294}
   - {fileID: 114076064219095642}
-  HiddenLayers: 04000000
-  Recurrent: 0
-  ActivationFunc: 2
+  HiddenLayers: 03000000
+  Recurrent: 1
+  ActivationFunc: 1
   UpdateFrequency: 0
   Weights:
   - 0
@@ -951,14 +938,6 @@ MonoBehaviour:
   - 0.2
   - 0.2
   RandomizeWeights: 1
-  ShowDebugGUI: 1
-  DebugRect:
-    serializedVersion: 2
-    x: 10
-    y: 10
-    width: 500
-    height: 50
-  DebugRowHeight: 30
 --- !u!114 &114535360299451978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1319,6 +1298,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityType: 2
+--- !u!114 &114627393783257742
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51c0595a9946489da6e9615824eaddd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateMethod: 0
+  nn: {fileID: 114421116656491112}
+--- !u!114 &114893175326576912
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 922ed1fcf3024a87a629f51baeaeae2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateMethod: 0
+  FieldOfViewDegrees: 45
 --- !u!114 &114963447607036016
 MonoBehaviour:
   m_ObjectHideFlags: 1

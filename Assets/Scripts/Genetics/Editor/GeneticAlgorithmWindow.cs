@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Genetics;
+using Logging;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class GeneticAlgorithmWindow : CustomEditorWindow {
     private bool wantsToSimulate;
+    private string logFilePath;
 
     private string speciesName;
-    private float intelligence;
+    private int numGenerations;
     private int populationSize;
 
     private GeneticAlgorithm ga {
@@ -24,8 +26,6 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
     }
 
     private void OnGUI() {
-        EditorGUI.BeginDisabledGroup(playmode == Playmode.IsPlaying);
-
         if (playmode == Playmode.IsStopped && GUILayout.Button("Start evolution")) {
             wantsToSimulate = true;
             StartPlaymode();
@@ -34,9 +34,19 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
             StopPlaymode();
         }
 
+        EditorGUI.BeginDisabledGroup(playmode == Playmode.IsPlaying);
+        logFilePath = Application.dataPath + EditorGUILayout.DelayedTextField("Path to log file", "/Resources/log.txt");
+        if (GUILayout.Button("Clear log file")) {
+            FileLogger.ClearFile();
+        }
+        EditorGUI.EndDisabledGroup();
+        FileLogger.FilePath = logFilePath;
+        
+        EditorGUI.BeginDisabledGroup(playmode == Playmode.IsPlaying);
         GUILayout.Label("Species", EditorStyles.boldLabel);
-        speciesName = EditorGUILayout.DelayedTextField("Name");
-        intelligence = EditorGUILayout.Slider("Intelligence", intelligence, 0.0f, 1.0f);
+        EditorGUILayout.LabelField("Number of genes", ga.NumGenesRequired.ToString());
+        speciesName = EditorGUILayout.DelayedTextField("Name", "<placeholder>");
+        numGenerations = EditorGUILayout.IntSlider("Number of generations", numGenerations, 1, 1000);
         populationSize = EditorGUILayout.IntSlider("Population size", populationSize, 1, 100);
         EditorGUI.EndDisabledGroup();
     }
@@ -49,10 +59,14 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
             return;
         }
 
-        ga.RunSingleGeneration(populationSize, () => {
-            Debug.Log("Generation complete");
-            StopPlaymode();
-        });
+        ga.Run(populationSize, (generation, duration, dnasByFitness, hallOfFame) => {
+            //Debug.LogFormat("Generation #{0} completed in {1}s", generation, duration);
+            Repaint();
+
+            if (generation == numGenerations) {
+                StopPlaymode();
+            }
+        }, numGenerations);
         Repaint();
     }
 

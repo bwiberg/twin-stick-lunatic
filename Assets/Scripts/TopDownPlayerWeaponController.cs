@@ -9,22 +9,20 @@ public class TopDownPlayerWeaponController : MonoBehaviour {
     [SerializeField] private Transform BulletSpawn;
     [SerializeField, Range(0, 10)] private float TimeBetweenShots = 1;
 
-    private uint numFiredBullets = 0;
-    private float lastTimeFired = 0.0f;
+    private uint numFiredBullets;
+    private float lastTimeFired;
 
     IEnumerator FireWeapon(uint bulletIndex) {
         if (Time.time - lastTimeFired > TimeBetweenShots) {
-            GameObject bullet = Instantiate(BulletPrefab, BulletSpawn.position, BulletSpawn.rotation) as GameObject;
-            ParticleSystem particles = bullet.GetComponent<ParticleSystem>(); 
+            var bullet = Instantiate(BulletPrefab, BulletSpawn.position, BulletSpawn.rotation) as GameObject;
+            var particles = bullet.GetComponent<ParticleSystem>(); 
             particles.Play();
-            Debug.LogFormat("Bullet #{0} instantiated.", bulletIndex, particles.main.loop);
 
             lastTimeFired = Time.time;
             
             yield return new WaitForSeconds(particles.main.duration + 0.5f);
             
-            Destroy(bullet);
-            Debug.LogFormat("Bullet #{0} destroyed.", bulletIndex);  
+            Destroy(bullet);  
         }
     }
     

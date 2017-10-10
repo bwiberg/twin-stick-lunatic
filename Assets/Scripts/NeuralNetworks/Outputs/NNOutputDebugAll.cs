@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace NeuralNetworks.Outputs {
     public class NNOutputDebugAll : RealtimeNeuralNetOutput {
-        [SerializeField] private int NumberOfOutputs = 1;
+        [SerializeField] private int NumberOfOutputs = 0;
 
         public override int OutputCount {
             get { return NumberOfOutputs; }
         }
 
         public override void HandleOutput(float[] values, int offset) {
-            StringBuilder sb = new StringBuilder("Output: [");
-            for (int i = offset; i < offset + OutputCount - 1; ++i) {
-                sb.AppendFormat("{0}, ", values[i]);
+            var sb = new StringBuilder("Output: [");
+            foreach (float t in values) {
+                sb.AppendFormat("{0}, ", t);
             }
             sb.AppendFormat("{0}]", values[offset + OutputCount - 1]);
             Debug.Log(sb.ToString());
