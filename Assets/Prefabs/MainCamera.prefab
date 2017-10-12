@@ -121,8 +121,8 @@ MonoBehaviour:
   RelativePosition: {x: 5, y: 20, z: -9}
   RelativeLookat: {x: 0, y: 0, z: 0}
   Instant: 0
-  CatchupFactorPosition: 0.075
-  CatchupFactorLookat: 0.075
+  CatchupFactorPosition: 0.02
+  CatchupFactorLookat: 0.1
 --- !u!124 &124266675378597598
 Behaviour:
   m_ObjectHideFlags: 1

@@ -49,6 +49,19 @@ namespace Utility {
             return string.Format("[{0}, {1}]", x, y);
         }
 
+        public override bool Equals(object obj) {
+            if (!(obj is IntVector2)) {
+                return false;
+            }
+
+            var other = (IntVector2) obj;
+            return this == other;
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
+        }
+
         public int[] values {
             get { return new[] {x, y}; }
         }
@@ -160,6 +173,20 @@ namespace Utility {
 
         public override string ToString() {
             return string.Format("[{0}, {1}, {2}]", x, y, z);
+        }
+        
+        
+        public override bool Equals(object obj) {
+            if (!(obj is IntVector3)) {
+                return false;
+            }
+
+            var other = (IntVector3) obj;
+            return this == other;
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
         }
 
         public int[] values {
@@ -281,6 +308,20 @@ namespace Utility {
 
         public override string ToString() {
             return string.Format("[{0}, {1}, {2}, {3}]", x, y, z, w);
+        }
+        
+        
+        public override bool Equals(object obj) {
+            if (!(obj is IntVector4)) {
+                return false;
+            }
+
+            var other = (IntVector4) obj;
+            return this == other;
+        }
+
+        public override int GetHashCode() {
+            return base.GetHashCode();
         }
 
         public int[] values {

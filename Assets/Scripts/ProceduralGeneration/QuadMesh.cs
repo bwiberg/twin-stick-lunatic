@@ -36,7 +36,7 @@ namespace ProceduralGeneration {
         private IList<IntVector4> Indices = new List<IntVector4>();
 
         public Mesh ToMesh(bool shareVertices = false, bool convertToTris = true) {
-            Mesh mesh = new Mesh();
+            var mesh = new Mesh();
 
             Vector3[] vertices;
             Vector2[] uvs;
