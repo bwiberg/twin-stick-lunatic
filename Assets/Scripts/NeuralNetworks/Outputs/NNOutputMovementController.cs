@@ -36,9 +36,6 @@ namespace NeuralNetworks.Outputs {
             if (jump >= JumpThreshold) {
                 movement.Jump();
             }
-            
-            if (forward > 0.1)
-                Debug.Log("Forward: " + forward);
 
             targetForwardSpeed = forward;
             targetAngularSpeed = TurnSpeed * turn;

@@ -29,6 +29,12 @@ namespace Genetics {
             Genes = genes;
         }
 
+        public void Mutate(float max) {
+            for (var i = 0; i < Genes.Length; i++) {
+                Genes[i] = Mathf.Clamp(Genes[i] + (2 * Random.value - 1) * max, -1, 1);
+            }
+        }
+
         public override string ToString() {
             return string.Format("[genes={0}, guid={1}]", Genes.ToStringWithSeparator(), guid);
         }

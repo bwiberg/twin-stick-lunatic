@@ -162,6 +162,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialSpeed: 40
   LifeLengthSeconds: 5
+  Damage: 5
+  HitPrefab: {fileID: 1268757137601916, guid: 914bd76bb3d3ee64db8104b89b2f72d4, type: 2}
 --- !u!114 &114890285873152304
 MonoBehaviour:
   m_ObjectHideFlags: 1

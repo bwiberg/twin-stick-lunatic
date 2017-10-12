@@ -8,6 +8,8 @@ namespace Weapons {
 
         [SerializeField, Range(0.0f, 100.0f)] private float InitialSpeed;
         [SerializeField, Range(1.0f, 10.0f)] private float LifeLengthSeconds = 5.0f;
+        [SerializeField, Range(1.0f, 100.0f)] private float Damage = 5.0f;
+        [SerializeField] private GameObject HitPrefab;
 
         #endregion
 
@@ -38,7 +40,15 @@ namespace Weapons {
 
         #endregion
 
-        private void OnCollisionEnter(Collision other) {
+        private void OnCollisionEnter(Collision col) {
+            var character = col.collider.GetComponentInChildren<Character>();
+            if (character) {
+                if (HitPrefab) {
+                    Instantiate(HitPrefab, col.transform.position, Quaternion.identity);
+                }
+                
+                character.Damage(Damage);
+            }
             KillSelf();
         }
 

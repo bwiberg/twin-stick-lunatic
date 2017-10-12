@@ -13,6 +13,7 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
     private string speciesName;
     private int numGenerations;
     private int populationSize;
+    private float mutationMax;
 
     private GeneticAlgorithm ga {
         get { return GeneticAlgorithm.Instance; }
@@ -49,6 +50,7 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
         speciesName = EditorGUILayout.DelayedTextField("Name", "<placeholder>");
         numGenerations = EditorGUILayout.IntSlider("Number of generations", numGenerations, 1, 1000);
         populationSize = EditorGUILayout.IntSlider("Population size", populationSize, 1, 100);
+        mutationMax = EditorGUILayout.Slider("Mutation max", mutationMax, 0, 1.0f);
         EditorGUI.EndDisabledGroup();
     }
 
@@ -60,6 +62,7 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
             return;
         }
 
+        ga.MutationMax = mutationMax;
         ga.Run(populationSize, (generation, duration, dnasByFitness, hallOfFame) => {
             //Debug.LogFormat("Generation #{0} completed in {1}s", generation, duration);
             Repaint();

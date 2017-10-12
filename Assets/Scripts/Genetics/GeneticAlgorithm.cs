@@ -31,6 +31,7 @@ namespace Genetics {
         [SerializeField] private UpdateMethod UpdateMethod;
         [SerializeField, Range(1.0f, 120.0f)] private float TerminationTime = 10.0f;
         [SerializeField] private CreatureCreator CreatureCreator;
+        public float MutationMax;
 
         #endregion
 
@@ -181,6 +182,11 @@ namespace Genetics {
                     dnas[i + 1] = tuple.Item2;
                 }
             }
+            
+            // 3) mutate new creatures
+            dnas.ForEach(dna => {
+                dna.Mutate(MutationMax);
+            });
 
             FileLogger.Log("  population: [{0}]", dnas
                 .Select(t => t.ToString())
