@@ -22,13 +22,14 @@ GameObject:
   - component: {fileID: 114289114280697842}
   - component: {fileID: 54137063924170312}
   - component: {fileID: 114421116656491112}
+  - component: {fileID: 114204510942733792}
   - component: {fileID: 114883778282955030}
   - component: {fileID: 114721766682198808}
   - component: {fileID: 114677277062148162}
   - component: {fileID: 114049113648824962}
   - component: {fileID: 114091853934142028}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy - Separate NNs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,6 +254,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxSpeed: 10
+--- !u!114 &114204510942733792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1386910090302376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3b4444d750464d93f214c124d6ea23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Inputs:
+  - {fileID: 114883778282955030}
+  - {fileID: 114677277062148162}
+  Outputs:
+  - {fileID: 114091853934142028}
+  HiddenLayers: 03000000
+  Recurrent: 1
+  ActivationFunc: 2
+  UpdatesPerSecond: 1
+  Weights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  RandomizeWeights: 1
 --- !u!114 &114289114280697842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -283,37 +318,24 @@ MonoBehaviour:
   - {fileID: 114677277062148162}
   Outputs:
   - {fileID: 114049113648824962}
-  - {fileID: 114091853934142028}
-  HiddenLayers: 04000000
-  Recurrent: 0
+  HiddenLayers: 03000000
+  Recurrent: 1
   ActivationFunc: 2
-  UpdateFrequency: 0
+  UpdatesPerSecond: 1
   Weights:
   - 0
-  - -1
-  - 0.8
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
-  - 0.2
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   RandomizeWeights: 1
-  ShowDebugGUI: 1
-  DebugRect:
-    serializedVersion: 2
-    x: 10
-    y: 10
-    width: 500
-    height: 50
-  DebugRowHeight: 30
 --- !u!114 &114677277062148162
 MonoBehaviour:
   m_ObjectHideFlags: 1

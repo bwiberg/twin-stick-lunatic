@@ -10,22 +10,23 @@ namespace Controllers {
         [SerializeField, Range(0.0f, 10.0f)] private float DashDurationSeconds = 1.0f;
         [SerializeField, Range(0.0f, 100.0f)] private float JumpVelocity = 1.0f;
         [SerializeField, Range(0.0f, 10.0f)] private float GravityMultiplier = 1.0f;
-        [SerializeField] private KeyCode DashKeyCode = KeyCode.LeftShift;
         [SerializeField] private bool CanMoveWhileAirborne;
         
         private CharacterController controller;
 
         private Vector3 velocity;
+        private bool didJump;
         private float timeOfLastDash = float.NegativeInfinity;
 
-        private void Start() {
+        private void Awake() {
             controller = GetComponent<CharacterController>();
         }
 
         private void Update() {
-            velocity.y = controller.isGrounded ? 0 : velocity.y;
-            Move();
-            Jump();
+            if (!didJump) {
+                velocity.y = controller.isGrounded ? 0 : velocity.y;
+            }
+            didJump = false;
         }
 
         private void FixedUpdate() {
@@ -35,20 +36,14 @@ namespace Controllers {
             controller.Move(velocity * Time.fixedDeltaTime);
         }
 
-        private void Move() {
+        public void Move(Vector3 direction, bool dash) {
             if (!controller.isGrounded && !CanMoveWhileAirborne) {
                 return;
             }
-            
-            var input = GetInput();
 
-            if (Input.GetKeyDown(DashKeyCode)) {
+            if (dash)
                 timeOfLastDash = Time.time;
-            }
-
-            var forwardDir = Camera.main.transform.forward.CopySetY(0).normalized;
-            var rightDir = Camera.main.transform.right.CopySetY(0).normalized;
-
+            
             float speed = MovementSpeed;
             float timeSinceLastDash = Time.time - timeOfLastDash;
             if (timeSinceLastDash < DashDurationSeconds) {
@@ -56,24 +51,16 @@ namespace Controllers {
                 speed = MovementSpeed * (a + DashMultiplier * (1 - a));
             }
 
-            velocity = (speed * (input.y * forwardDir + input.x * rightDir)).CopySetY(velocity.y);
+            velocity = (speed * direction).CopySetY(velocity.y);
         }
 
-        private void Jump() {
+        public void Jump() {
             if (!controller.isGrounded) {
                 return;
             }
-            
-            if (CrossPlatformInputManager.GetButtonDown("Jump")) {
-                velocity.y = JumpVelocity;
-            }
-        }
 
-        private static Vector2 GetInput() {
-            return new Vector2 {
-                x = CrossPlatformInputManager.GetAxis("Horizontal"),
-                y = CrossPlatformInputManager.GetAxis("Vertical")
-            };
+            didJump = true;
+            velocity.y = JumpVelocity;
         }
     }
 }

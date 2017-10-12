@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 143150359853589400}
   - component: {fileID: 114055517097911678}
   - component: {fileID: 114082894994919212}
+  - component: {fileID: 114801793112134896}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -85,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1507079626188782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalPosition: {x: 0, y: 46.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4800716010451910}
@@ -175,7 +176,6 @@ MonoBehaviour:
   DashDurationSeconds: 1
   JumpVelocity: 10
   GravityMultiplier: 2
-  DashKeyCode: 304
   CanMoveWhileAirborne: 1
 --- !u!114 &114082894994919212
 MonoBehaviour:
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1507079626188782}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06e336d4b70647c4924c5e619033a134, type: 3}
   m_Name: 
@@ -191,6 +191,7 @@ MonoBehaviour:
   WeaponPrefabs:
   - {fileID: 114617677628747620, guid: 33a0dc0b53504d14ab91115ac6979e0d, type: 2}
   WeaponPivot: {fileID: 4995937483263628}
+  Ground: {fileID: 0}
 --- !u!114 &114083675274855548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -489,6 +490,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityType: 0
+--- !u!114 &114801793112134896
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1507079626188782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abca4b19a6645e7b0a057bc91c74abe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DashKeyCode: 304
 --- !u!143 &143150359853589400
 CharacterController:
   m_ObjectHideFlags: 1

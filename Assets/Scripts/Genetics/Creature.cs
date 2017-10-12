@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Genetics {
     public class Creature : CustomBehaviour {
-        [SerializeField] private UpdateMethod UpdateMethod;
         [SerializeField] private RealtimeNeuralNet nn;
 
         public enum State {

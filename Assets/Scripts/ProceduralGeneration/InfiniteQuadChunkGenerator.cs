@@ -6,6 +6,7 @@ using Utility;
 
 namespace ProceduralGeneration {
     public class InfiniteQuadChunkGenerator : InfiniteTerrainChunkGenerator {
+        [SerializeField] private bool RandomizeSeed;
         [SerializeField] private InfiniteTerrainChunk ChunkPrefab;
 
         [SerializeField] private int SubdivisionsX = 10;
@@ -18,7 +19,6 @@ namespace ProceduralGeneration {
         [SerializeField] private bool ConvertToTris = true;
 
         public override void CreateChunk(Vector2 center, Vector2 dimensions, ChunkCreatedCallback callback) {
-            // this allows our worker to report progress during work
             var bw = new BackgroundWorker();
 
             bw.DoWork += delegate(object o, DoWorkEventArgs args) {
@@ -74,14 +74,20 @@ namespace ProceduralGeneration {
                 }
 
                 float noise = Mathf.PerlinNoise(
-                    octaveX,
-                    octaveZ);
+                    PerlinNoiseOffset + octaveX,
+                    PerlinNoiseOffset + octaveZ);
                 noise = Mathf.Max(noise - minNoise, 0.0f) / (1.0f - minNoise);
 
                 sum += height * noise;
             }
 
             return sum;
+        }
+
+        private float PerlinNoiseOffset;
+
+        private void Awake() {
+            PerlinNoiseOffset = 1e4f + (RandomizeSeed ? UnityEngine.Random.value * 1e6f : 0.0f);
         }
     }
 }

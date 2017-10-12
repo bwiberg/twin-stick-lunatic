@@ -21,10 +21,14 @@ namespace Controllers {
         private Weapon ActiveWeapon {
             get { return weaponInventory[activeWeaponIndex]; }
         }
+        
+        private int RaycastMask;
 
         #endregion
 
         private void Start() {
+            RaycastMask = LayerMask.GetMask("Ground", "Enemy", "Player");
+            
             weaponInventory = new Weapon[WeaponPrefabs.Length];
             for (int i = 0; i < WeaponPrefabs.Length; i++) {
                 weaponInventory[i] = Instantiate(WeaponPrefabs[i].gameObject, WeaponPivot).GetComponent<Weapon>();
@@ -61,7 +65,7 @@ namespace Controllers {
             ActiveWeapon.gameObject.SetActive(true);
         }
 
-        private bool HasPressedSwitchKey(out int weaponIndex) {
+        private static bool HasPressedSwitchKey(out int weaponIndex) {
             weaponIndex = -1;
             foreach (var kvp in WeaponIndicesByKeycode) {
                 if (Input.GetKeyDown(kvp.Key)) {
@@ -76,9 +80,16 @@ namespace Controllers {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
-            if (!Ground.Raycast(ray, out hit, 1000)) return;
+            if (!Physics.Raycast(ray, out hit, 1e6f, RaycastMask)) return;
 
-            transform.LookAt(hit.point.CopySetY(transform.position.y));
+            var lookat = hit.point;
+            
+            transform.LookAt(lookat.CopySetY(transform.position.y));
+
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+                lookat = lookat.CopySetY(hit.collider.bounds.center.y);
+            }
+            ActiveWeapon.transform.LookAt(lookat);
         }
 
         #region STATIC_MEMBERS

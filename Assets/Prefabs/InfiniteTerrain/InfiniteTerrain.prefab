@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1035356059758498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.9000001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,14 +52,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b16d11d11b04819a2b0b5345f13699d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RandomizeSeed: 1
   ChunkPrefab: {fileID: 114045294230210658, guid: 0df797bec5db48144923614d58630b22,
     type: 2}
-  SubdivisionsX: 50
-  SubdivisionsY: 50
+  SubdivisionsX: 10
+  SubdivisionsY: 10
   OctavesScaleAndHeightAndMinNoise:
-  - {x: 0.2, y: 5, z: 0.75}
-  - {x: 0.1, y: 10, z: 0.5}
-  - {x: 0.01, y: 15, z: 0.3}
+  - {x: 0.2, y: 2, z: 0.75}
+  - {x: 0.1, y: 5, z: 0.5}
+  - {x: 0.01, y: 8, z: 0.3}
   RoundNoise: 0
   FlatShading: 1
   ConvertToTris: 1
@@ -74,6 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d1e6ec238d43ec98c1302a14c5c2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SecondsBetweenUpdates: 1
+  SecondsBetweenUpdates: 0.25
   ChunkGenerator: {fileID: 114554338052498932}
-  ChunkDimensions: {x: 50, y: 50}
+  ChunkDimensions: {x: 25, y: 25}
+  GenerationRadius: 2
+  DeletionRadius: 3

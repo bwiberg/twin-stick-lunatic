@@ -1,6 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
 using UnityEngine;
-using Utility;
 
 namespace Weapons {
     [RequireComponent(typeof(Rigidbody))]
@@ -8,7 +7,7 @@ namespace Weapons {
         #region SERIALIZED_VARIABLES 
 
         [SerializeField, Range(0.0f, 100.0f)] private float InitialSpeed;
-        [SerializeField, Range(0.0f, 100.0f)] private float AirResistanceFactor;
+        [SerializeField, Range(1.0f, 10.0f)] private float LifeLengthSeconds = 5.0f;
 
         #endregion
 
@@ -39,12 +38,30 @@ namespace Weapons {
 
         #endregion
 
+        private void OnCollisionEnter(Collision other) {
+            KillSelf();
+        }
+
         private void Start() {
             FireSelf();
+            StartCoroutine(KillAfterLifeLengthReached());
         }
 
         private void FireSelf() {
             rb.velocity = InitialSpeed * transform.forward;
+        }
+        
+        private void KillSelf() {
+            Destroy(gameObject);
+        }
+
+        private IEnumerator KillAfterLifeLengthReached() {
+            yield return new WaitForSeconds(LifeLengthSeconds);
+            KillSelf();
+        }
+
+        private void OnDestroy() {
+            StopCoroutine("KillAfterLifeLengthReached");
         }
     }
 }

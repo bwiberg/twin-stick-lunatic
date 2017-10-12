@@ -29,6 +29,7 @@ public class GeneticAlgorithmWindow : CustomEditorWindow {
         if (playmode == Playmode.IsStopped && GUILayout.Button("Start evolution")) {
             wantsToSimulate = true;
             StartPlaymode();
+            Random.InitState(System.DateTime.Now.Millisecond);
         }
         else if (playmode == Playmode.IsPlaying && wantsToSimulate && GUILayout.Button("End evolution")) {
             StopPlaymode();

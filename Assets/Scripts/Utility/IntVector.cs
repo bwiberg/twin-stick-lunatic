@@ -59,7 +59,7 @@ namespace Utility {
         }
 
         public override int GetHashCode() {
-            return base.GetHashCode();
+            return 23 + 139 * x + y;
         }
 
         public int[] values {
@@ -186,7 +186,7 @@ namespace Utility {
         }
 
         public override int GetHashCode() {
-            return base.GetHashCode();
+            return 23 + 139 * (139 * x + y) + z;
         }
 
         public int[] values {
@@ -321,7 +321,7 @@ namespace Utility {
         }
 
         public override int GetHashCode() {
-            return base.GetHashCode();
+            return 23 + 139 * (139 * (139 * x + y) + z) + w;
         }
 
         public int[] values {

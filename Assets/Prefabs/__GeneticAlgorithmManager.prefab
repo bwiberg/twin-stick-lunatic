@@ -71,8 +71,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Box:
-    m_Center: {x: 0, y: 1, z: 0}
-    m_Extent: {x: 40, y: 1, z: 40}
+    m_Center: {x: 0, y: 10, z: 0}
+    m_Extent: {x: 20, y: 1, z: 20}
   LookAtPlayer: 1
 --- !u!114 &114905763142490152
 MonoBehaviour:
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2491ac1c0f24f1eb17533f85ba9ed2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CreaturePrefab: {fileID: 114627393783257742, guid: 381dcbd06f9e84736b66592208ff9c92,
+  CreaturePrefab: {fileID: 114668965938273190, guid: c3726d96e213e9b499e6c5b8cb8b4bb1,
     type: 2}
   SpawnStateCreator: {fileID: 114172664494710914}
 --- !u!114 &114946382917711120

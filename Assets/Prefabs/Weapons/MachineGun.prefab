@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6563066af4c41e6b0c74f57ee937383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cooldown: 1
+  Cooldown: 0.1
   ProjectilePrefab: {fileID: 114466339403034476, guid: 289cc078f481b9c479aaad2ec32a2793,
     type: 2}
   Muzzle: {fileID: 4676108666549394}
