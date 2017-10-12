@@ -915,7 +915,7 @@ MonoBehaviour:
   HiddenLayers: 03000000
   Recurrent: 1
   ActivationFunc: 1
-  UpdateFrequency: 0
+  UpdatesPerSecond: 1
   Weights:
   - 0
   - -1

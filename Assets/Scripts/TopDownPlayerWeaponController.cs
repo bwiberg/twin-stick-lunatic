@@ -26,21 +26,21 @@ public class TopDownPlayerWeaponController : MonoBehaviour {
         }
     }
     
-    void Update() {
+    private void Update() {
         LookAtMouse();
-        if (Input.GetButtonDown("Fire1")) {
+        if (Input.GetButton("Fire1")) {
             StartCoroutine(FireWeapon(numFiredBullets++));
         }
     }
 
     private void LookAtMouse() {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit hit;
-        if (Ground.Raycast(ray, out hit, 1000)) {
-            Vector3 lookat = hit.point;
-            lookat.y = transform.position.y;
-            transform.LookAt(lookat);
-        }
+        if (!Ground.Raycast(ray, out hit, 1000)) return;
+        
+        var lookat = hit.point;
+        lookat.y = transform.position.y;
+        transform.LookAt(lookat);
     }
 }

@@ -138,13 +138,13 @@ public class TopDownPlayerMovementController : MonoBehaviour {
 
     private void StickToGroundHelper() {
         RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, capsule.radius * (1.0f - advancedSettings.shellOffset),
+        if (!Physics.SphereCast(transform.position, capsule.radius * (1.0f - advancedSettings.shellOffset),
             Vector3.down, out hitInfo,
             ((capsule.height / 2f) - capsule.radius) +
-            advancedSettings.stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore)) {
-            if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f) {
-                rigidbody.velocity = Vector3.ProjectOnPlane(rigidbody.velocity, hitInfo.normal);
-            }
+            advancedSettings.stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore)) return;
+        
+        if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f) {
+            rigidbody.velocity = Vector3.ProjectOnPlane(rigidbody.velocity, hitInfo.normal);
         }
     }
 

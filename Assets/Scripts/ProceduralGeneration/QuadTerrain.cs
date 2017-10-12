@@ -4,71 +4,94 @@ using Utility;
 namespace ProceduralGeneration {
     [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
     public class QuadTerrain : CustomBehaviour {
-        private MeshFilter meshFilter;
-        private MeshCollider meshCollider;
+        public static float MaxOffset = 1e4f;
 
-        [SerializeField] private bool GenerateEachFrame;
-        
+        private MeshFilter MeshFilter {
+            get { return GetComponent<MeshFilter>(); }
+        }
+
+        private MeshCollider MeshCollider {
+            get { return GetComponent<MeshCollider>(); }
+        }
+
+        public enum GenerationTime {
+            OnAwake,
+            EachFrame,
+            EditorOnly
+        }
+
+        public GenerationTime TimeOfGeneration;
+        public Vector2 NormalizedOffset;
+
         [SerializeField] private Vector2 Dimensions;
         [SerializeField] private int SubdivisionsX = 10;
         [SerializeField] private int SubdivisionsY = 10;
 
-        [SerializeField] private float NoiseDetail = 1.0f;
+        [SerializeField] private Vector3[] OctavesScaleAndHeightAndMinNoise;
         [SerializeField] private bool RoundNoise;
-        [SerializeField, Range(0, 1)] private float MinNoiseValue = 0.0f;
-        [SerializeField] private float MaxTerrainHeight = 1.0f;
 
         [SerializeField] private bool FlatShading = true;
         [SerializeField] private bool ConvertToTris = true;
 
         private void Awake() {
-            meshFilter = GetComponent<MeshFilter>();
-            meshCollider = GetComponent<MeshCollider>();
-
-            UpdateTerrain();
-        }
-
-        private void Update() {
-            if (GenerateEachFrame) {
+            if (TimeOfGeneration == GenerationTime.OnAwake) {
                 UpdateTerrain();
             }
         }
 
-        private void UpdateTerrain() {
-            Mesh mesh = GenerateTerrain();
+        private void Update() {
+            if (TimeOfGeneration == GenerationTime.EachFrame) {
+                UpdateTerrain();
+            }
+        }
 
-            meshFilter.sharedMesh = mesh;
-            meshCollider.sharedMesh = mesh;
+        public void UpdateTerrain() {
+            var mesh = GenerateTerrain();
+
+            MeshFilter.sharedMesh = mesh;
+            MeshCollider.sharedMesh = mesh;
+
+            transform.position = transform.position.CopySetXZ(-Dimensions / 2);
         }
 
         private Mesh GenerateTerrain() {
-            QuadMesh quadMesh = QuadMesh.CreatePlane(Dimensions, new IntVector2(SubdivisionsX, SubdivisionsY));
-            quadMesh.ForEachVertex((ref Vector3 vertex, ref Vector2 uv) => {
-                // vertex.y = vertex.x + vertex.z;
-            });
-            if (MinNoiseValue != 1.0f) {
-                quadMesh.ForEachQuad((quad, index) => {
-                    float noise = GenerateNoise(quad.vertices[0].x, quad.vertices[0].z);
-                    noise = Mathf.Max(noise - MinNoiseValue, 0.0f) / (1.0f - MinNoiseValue);
+            var quadMesh = QuadMesh.CreatePlane(Dimensions, new IntVector2(SubdivisionsX, SubdivisionsY));
 
-                    if (noise != 0.0f) {
-                        float height = MaxTerrainHeight * noise;
-                        quadMesh.Extrude(index, quad.Normal, height);
-                    }
-                });
-            }
+            quadMesh.ForEachQuad((quad, index) => {
+                float height = GenerateHeight(quad.vertices[0].x, quad.vertices[0].z);
+
+                if (height == 0.0f) return;
+                quadMesh.Extrude(index, quad.Normal, height);
+            });
+
             quadMesh.Optimize();
             return quadMesh.ToMesh(!FlatShading, ConvertToTris);
         }
 
-        private float GenerateNoise(float x, float z) {
-            x *= NoiseDetail;
-            z *= NoiseDetail;
-            if (RoundNoise) {
-                x = Mathf.Round(x);
-                z = Mathf.Round(z);
+        private float GenerateHeight(float x, float z) {
+            float sum = 0.0f;
+
+            foreach (var v in OctavesScaleAndHeightAndMinNoise) {
+                float scale = v[0];
+                float height = v[1];
+                float minNoise = v[2];
+
+                float octaveX = x * scale;
+                float octaveZ = z * scale;
+                if (RoundNoise) {
+                    octaveX = Mathf.Round(octaveX);
+                    octaveZ = Mathf.Round(octaveZ);
+                }
+
+                float noise = Mathf.PerlinNoise(
+                    octaveX + MaxOffset * NormalizedOffset.x,
+                    octaveZ + MaxOffset * NormalizedOffset.y);
+                noise = Mathf.Max(noise - minNoise, 0.0f) / (1.0f - minNoise);
+
+                sum += height * noise;
             }
-            return Mathf.PerlinNoise(x, z);
+
+            return sum;
         }
     }
 }

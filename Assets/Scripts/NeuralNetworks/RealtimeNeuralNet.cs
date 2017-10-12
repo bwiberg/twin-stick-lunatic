@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Utility;
@@ -13,22 +11,14 @@ namespace NeuralNetworks {
         SmoothTanh
     }
 
-    public enum UpdateFrequency {
-        Update,
-        FixedUpdate
-    }
-
     public class RealtimeNeuralNet : CustomBehaviour {
         [SerializeField] private RealtimeNeuralNetInput[] Inputs;
         [SerializeField] private RealtimeNeuralNetOutput[] Outputs;
         [SerializeField] private int[] HiddenLayers;
         [SerializeField] private bool Recurrent;
         [SerializeField] private ActivationFunc ActivationFunc;
-        [SerializeField] private UpdateFrequency UpdateFrequency;
+        [SerializeField, Range(1, 60)] private float UpdatesPerSecond = 1; 
         [SerializeField] public float[] Weights;
-        
-        // DEBUG stuff
-        
         [SerializeField] private bool RandomizeWeights;
         
         public int RequiredWeights {
@@ -82,8 +72,11 @@ namespace NeuralNetworks {
             }
         }
 
+        private float TimeBetweenUpdates {
+            get { return 1f / UpdatesPerSecond; }
+        }
+
         private void OnEnable() {
-            Debug.Log("RealtimeNeuralNet enabled.");
             net = new FullyConnectedNN(NeuronsPerLayer, AF);
             inputs = new float[NumInputs];
             outputs = new float[NumOutputs].Fill(0.0f);
@@ -93,24 +86,18 @@ namespace NeuralNetworks {
                     Weights[i] = Random.Range(-1.0f, 1.0f);
                 }
             }
-            
-            Debug.LogFormat("Weights: {0}", string.Join(", ", Weights.Select(value => value.ToString()).ToArray()));
+        }
+
+        private IEnumerator Run() {
+            while (enabled) {
+                Process();
+                yield return new WaitForSeconds(TimeBetweenUpdates);
+            }
         }
 
         private void Start() {
             ValidateWeights();
-        }
-
-        private void Update() {
-            if (UpdateFrequency == UpdateFrequency.Update) {
-                Process();
-            }
-        }
-
-        private void FixedUpdate() {
-            if (UpdateFrequency == UpdateFrequency.FixedUpdate) {
-                Process();
-            }
+            StartCoroutine(Run());
         }
 
         private void Process() {

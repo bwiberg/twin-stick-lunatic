@@ -1,14 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Utility;
+using Random = UnityEngine.Random;
+using Tuple = Utility.Tuple;
 
 namespace Genetics {
+    [Serializable]
     public class DNA {
-        public static int Count { get; private set; }
-
         public readonly float[] Genes;
-        public readonly int ID;
+        public readonly GUID guid = GUID.Generate();
 
         public uint Length {
             get { return (uint) Genes.Length; }
@@ -20,17 +23,14 @@ namespace Genetics {
             for (uint i = 0; i < length; ++i) {
                 Genes[i] = Random.Range(-1.0f, 1.0f);
             }
-
-            ID = Count++;
         }
 
         public DNA(float[] genes) {
             Genes = genes;
-            Count++;
         }
 
         public override string ToString() {
-            return string.Format("[genes={0}, ID={1}]", Genes.ToStringWithSeparator(), ID);
+            return string.Format("[genes={0}, guid={1}]", Genes.ToStringWithSeparator(), guid);
         }
 
         public override bool Equals(object obj) {
@@ -40,10 +40,10 @@ namespace Genetics {
 
             var dna = (DNA) obj;
 
-            return Genes.SequenceEqual(dna.Genes);
+            return guid.Equals(dna.guid) && Genes.SequenceEqual(dna.Genes);
         }
 
-        public static Tuple<DNA, DNA> Breed(DNA a, DNA b) {
+        public static Utility.Tuple<DNA, DNA> Breed(DNA a, DNA b) {
             Assert.AreEqual(a.Length, b.Length);
             uint length = a.Length;
             
@@ -61,10 +61,6 @@ namespace Genetics {
             }
             
             return Tuple.Create(new DNA(genes1), new DNA(genes2));
-        }
-
-        static DNA() {
-            Count = 0;
         }
     }
 }
